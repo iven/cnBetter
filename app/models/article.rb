@@ -6,4 +6,5 @@ class Article
   field :published_on, type: DateTime
   field :_id, type: Integer, default: ->{ id }
   validates_presence_of :id
+  embeds_many :comments
 end
