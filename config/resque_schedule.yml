@@ -1,0 +1,5 @@
+update_article_list:
+  every: 1m
+  class: UpdateArticleList
+  description: "Update article list from cnBeta mobile."
+

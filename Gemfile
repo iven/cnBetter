@@ -24,6 +24,9 @@ end
 gem 'jquery-rails'
 gem "mongoid", "~> 3.0.0"
 gem 'slim-rails'
+gem 'nokogiri'
+gem 'resque', require: 'resque/server'
+gem 'resque-scheduler', require: 'resque_scheduler'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
