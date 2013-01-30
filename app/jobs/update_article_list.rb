@@ -15,7 +15,7 @@ module UpdateArticleList
       ids << a['href'].split('=')[1]
     end
 
-    ids.reject! { |id| Article.where(id: id).exists? }
+    ids.reject! { |id| Article.where(id_: id).exists? }
 
     ids.each do |id|
       Resque.enqueue(UpdateArticle, id)
