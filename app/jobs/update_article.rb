@@ -33,6 +33,10 @@ module UpdateArticle
       hash['id_'] = Integer(id)
 
       Article.create!(hash)
+
+      unless Topic.where(name: md['topic']).exists?
+        Resque.enqueue(UpdateTopic, hash['id_'])
+      end
     end
   end
 end

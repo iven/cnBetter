@@ -1,4 +1,7 @@
 CnBetter::Application.routes.draw do
+  resources :topics
+
+
   get "image/proxy"
 
   resources :articles

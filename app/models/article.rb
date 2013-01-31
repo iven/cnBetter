@@ -7,4 +7,5 @@ class Article
   field :published_on, type: DateTime
   field :_id, type: Integer, default: ->{ id_ }
   embeds_many :comments
+  belongs_to :topic
 end

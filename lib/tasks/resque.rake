@@ -10,6 +10,6 @@ task "resque:setup" => :environment do
   ENV['COUNT'] = '5'
   ENV['VERBOSE'] = '1'
   #Dir["#{Rails.root}/app/jobs/*.rb"].each { |file| require file }
-  #Resque.enqueue(UpdateArticle, '223687')
+  #Resque.enqueue(UpdateTopic, '223687')
 end
 
