@@ -3,3 +3,8 @@ update_article_list:
   class: UpdateArticleList
   description: "Update article list from cnBeta mobile."
 
+update_comments:
+  every: 5m
+  class: UpdateComments
+  description: "Update comments for the articles published in 24hrs."
+
