@@ -26,10 +26,10 @@ module UpdateArticle
     if md
       hash = Hash[ md.names.zip(md.captures) ]
 
-      doc = Nokogiri::HTML(hash['content'])
+      doc = Nokogiri::HTML.fragment(hash['content'])
       self.format_image! doc
 
-      hash['content'] = doc.to_html
+      hash['content'] = doc.to_html.strip
       hash['id_'] = Integer(id)
 
       Article.create!(hash)
