@@ -1,18 +1,22 @@
-p#notice = notice
+= content_for(:title, "#{@article.title} - cnBetter")
 
-p
-  strong Id:
-  = @article.id
-p
-  strong Title:
-  = @article.title
-p
-  strong Content:
-  = @article.content
-p
-  strong Published on:
-  = @article.published_on
+div.row#container
+  h2
+    a href="http://www.cnbeta.com/articles/#{@article.id}.htm"
+      = @article.title
 
-= link_to 'Edit', edit_article_path(@article)
-'|
-= link_to 'Back', articles_path
+  div.row
+    div.four.columns.push-eight#comments
+        ul
+          - if @article.comments.empty?
+            li.panel.radius
+              p 暂无热门评论 :(
+          - @article.comments.desc(:support).each do |comment|
+            li.panel.radius
+              p = comment.content
+              p.vote
+                span.support = "↑#{comment.support}"
+                span.against = "↓#{comment.against}"
+
+    div.eight.columns.pull-four#article
+      = @article.content.html_safe

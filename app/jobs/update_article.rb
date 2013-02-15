@@ -6,24 +6,44 @@ require 'nokogiri'
 module UpdateArticle
   @queue = :update_article
 
-  def self.format_paragraph!(doc)
-    doc.search("//br/preceding-sibling::text()|//br/following-sibling::text()").each do |node|
-      content = node.to_html.strip.gsub('　', '')
+  def self.format_paragraph
+    @doc.css('br').each do |node|
+      content = ""
+      sibling = node.previous_sibling
+      while sibling and ['a', 'b', 'i', 'text'].include?(sibling.name)
+        content = sibling.to_html.strip + content
+        sibling.remove
+        sibling = node.previous_sibling
+      end
+
       unless content.empty?
         node.replace(Nokogiri.make("<p>#{content}</p>"))
       end
+
+      node.remove
     end
-    doc.css('br').remove
+    @doc.xpath('//p/text() | //b/text()').each do |node|
+      node.content = node.content.gsub('　', '')
+    end
   end
 
-  def self.format_image!(doc)
-    doc.css('img').each do |img|
+  def self.format_video
+    @doc.css('embed').wrap '<div class="ten columns centered flex-video"></div>'
+  end
+
+  def self.format_image
+    @doc.css('a').each do |link|
+      uri = link['href'].sub(%r{^img}, 'http://cnbeta.com/img')
+      link['href'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, '/image/proxy?uri=\1')
+    end
+    @doc.css('img').each do |img|
       uri = img['src'].sub(%r{^img}, 'http://cnbeta.com/img')
       unless Image.where(uri: uri).exists?
         Resque.enqueue(UpdateImage, uri)
       end
       img['src'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, '/image/proxy?uri=\1')
     end
+    @doc.css('img').wrap '<div class="image"></div>'
   end
 
   def self.perform(id)
@@ -31,22 +51,22 @@ module UpdateArticle
 
     uri = "http://m.cnbeta.com/marticle.php?sid=#{id}"
 
-    doc = Nokogiri::XML(open(uri).read.force_encoding('utf-8'))
-    self.format_image! doc
-    self.format_paragraph! doc
+    @doc = Nokogiri::XML(open(uri).read.force_encoding('utf-8'))
+    self.format_image
+    self.format_video
+    self.format_paragraph
 
-    card = doc.at_xpath('/wml/card/p')
+    card = @doc.at_xpath('/wml/card/p')
     card.name = 'div'
-    card['class'] = 'content'
+    card['id'] = 'content'
 
     card.children[-3..-1].remove # 查看评论、返回首页
     card.child.remove # 返回首页
     title = card.child.remove.text.strip
-    card.child.remove # 新闻发布日期
+    card.child.child.remove # 新闻发布日期
     published_on = card.child.remove.text.strip
-    card.child.remove # 新闻主题
+    card.child.child.remove # 新闻主题
     topic = card.child.remove.text.strip
-    card.child.remove # 空
 
     author = nil
     md = card.child.text.match(/感谢(?<author>.*)的投递/)

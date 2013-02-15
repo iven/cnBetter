@@ -1,0 +1,53 @@
+doctype html
+== "<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->"
+== "<!--[if lt IE 7 ]> <html class=\"ie6\" lang=\"en\"> <![endif]-->"
+== "<!--[if IE 7 ]>    <html class=\"ie7\" lang=\"en\"> <![endif]-->"
+== "<!--[if IE 8 ]>    <html class=\"ie8\" lang=\"en\"> <![endif]-->"
+== "<!--[if IE 9 ]>    <html class=\"ie9\" lang=\"en\"> <![endif]-->"
+== "<!--[if (gt IE 9)|!(IE)]><!--> <html lang=\"en\"> <!--<![endif]-->"
+
+head
+  meta charset="utf-8"
+
+  / Uncomment to make IE8 render like IE7
+  / meta http-equiv="X-UA-Compatible" content="IE=7"
+  
+  / Set the viewport width to device width for mobile
+  meta name="viewport" content="width=device-width, initial-scale=1.0"
+
+  title= content_for?(:title) ? yield(:title) : "CnBetter - CnBeta 全文版"
+
+  / Included CSS Files
+  = stylesheet_link_tag "application"
+
+  / Included JS Files
+  = javascript_include_tag "application"
+
+  = csrf_meta_tag
+
+body
+  .container
+    header class="fixed contain-to-grid"
+      nav class="top-bar"
+        ul
+          li class="name"
+            h1 = link_to "CnBetter", root_path
+          li class="toggle-topbar"
+            a href="#"
+        section
+          ul class="left"
+          ul class="right"
+            li
+              = link_to "首页", root_path
+            li
+              = link_to "新闻主题", topics_path
+            li class="divider"
+            li
+              a href="#" 关于
+            li class="search"
+              form
+                input type="search"
+            li class="has-button"
+              a class="small button" href="#" 搜索
+    == yield
+

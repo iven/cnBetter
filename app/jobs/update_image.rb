@@ -7,7 +7,7 @@ module UpdateImage
   @queue = :update_image
 
   def self.perform(uri)
-    return if Image.where(uri: uri).exists?
+    return if Image.where(uri: uri).exists? or not uri.start_with?('http://img.cnbeta.com/')
 
     image_data = open(URI.escape(uri)).read
 
