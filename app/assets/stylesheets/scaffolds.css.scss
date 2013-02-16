@@ -4,8 +4,11 @@ body {
 }
 
 header {
-  background-color: rgb(51, 51, 51);
   border-bottom: 3px solid rgb(51, 174, 194);
+}
+
+.top-bar,.contain-to-grid {
+  background-color: rgb(41, 41, 41);
 }
 
 h1 {

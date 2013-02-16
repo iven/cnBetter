@@ -11,11 +11,13 @@ head
 
   / Uncomment to make IE8 render like IE7
   / meta http-equiv="X-UA-Compatible" content="IE=7"
-  
+
   / Set the viewport width to device width for mobile
   meta name="viewport" content="width=device-width, initial-scale=1.0"
 
   title= content_for?(:title) ? yield(:title) : "CnBetter - CnBeta 全文版"
+
+  = auto_discovery_link_tag :atom, feed_url
 
   / Included CSS Files
   = stylesheet_link_tag "application"

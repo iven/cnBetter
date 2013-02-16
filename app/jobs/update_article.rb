@@ -5,6 +5,7 @@ require 'nokogiri'
 
 module UpdateArticle
   @queue = :update_article
+  @root_url = Rails.application.routes.url_helpers.root_url
 
   def self.format_paragraph
     @doc.css('br').each do |node|
@@ -34,16 +35,16 @@ module UpdateArticle
   def self.format_image
     @doc.css('a').each do |link|
       uri = link['href'].sub(%r{^img}, 'http://cnbeta.com/img')
-      link['href'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, '/image/proxy?uri=\1')
+      link['href'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, "#{@root_url}image/proxy?uri=\\1")
     end
     @doc.css('img').each do |img|
       uri = img['src'].sub(%r{^img}, 'http://cnbeta.com/img')
       unless Image.where(uri: uri).exists?
         Resque.enqueue(UpdateImage, uri)
       end
-      img['src'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, '/image/proxy?uri=\1')
+      img['src'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, "#{@root_url}image/proxy?uri=\\1")
     end
-    @doc.css('img').wrap '<div class="image"></div>'
+    @doc.css('img').wrap '<div align="center"></div>'
   end
 
   def self.perform(id)
@@ -64,7 +65,7 @@ module UpdateArticle
     card.child.remove # 返回首页
     title = card.child.remove.text.strip
     card.child.child.remove # 新闻发布日期
-    published_on = card.child.remove.text.strip
+    published_on = Time.parse card.child.remove.text.strip
     card.child.child.remove # 新闻主题
     topic = card.child.remove.text.strip
 
@@ -81,6 +82,7 @@ module UpdateArticle
       author: author,
       content: card.to_html,
       published_on: published_on,
+      updated_on: published_on,
     )
 
     topic = Topic.find_or_create_by(name: topic)

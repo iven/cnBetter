@@ -28,4 +28,6 @@ CnBetter::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  routes.default_url_options = {host: '127.1:3000'}
 end

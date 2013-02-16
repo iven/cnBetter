@@ -7,16 +7,17 @@ div.row#container
 
   div.row
     div.four.columns.push-eight#comments
-        ul
-          - if @article.comments.empty?
-            li.panel.radius
-              p 暂无热门评论 :(
-          - @article.comments.desc(:support).each do |comment|
-            li.panel.radius
-              p = comment.content
-              p.vote
-                span.support = "↑#{comment.support}"
-                span.against = "↓#{comment.against}"
+      h6#comments_title 热门评论
+      ul
+        - if @article.comments.empty?
+          li.panel.radius
+            p 暂无热门评论 :(
+        - @article.comments.each do |comment|
+          li.panel.radius
+            = comment.content.html_safe
+            p.vote
+              span.support = "↑#{comment.support}"
+              span.against = "↓#{comment.against}"
 
     div.eight.columns.pull-four#article
       = @article.content.html_safe

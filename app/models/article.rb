@@ -5,7 +5,10 @@ class Article
   field :author, type: String
   field :content, type: String
   field :published_on, type: DateTime
+  field :updated_on, type: DateTime
   field :_id, type: Integer, default: ->{ id_ }
+
+  default_scope desc(:published_on)
   embeds_many :comments
   belongs_to :topic
 end
