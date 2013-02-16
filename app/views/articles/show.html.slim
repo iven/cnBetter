@@ -1,12 +1,12 @@
 = content_for(:title, "#{@article.title} - cnBetter")
 
-div.row#container
-  h2
-    a href="http://www.cnbeta.com/articles/#{@article.id}.htm"
-      = @article.title
+h2
+  a href="http://www.cnbeta.com/articles/#{@article.id}.htm"
+    = @article.title
 
-  div.row
-    div.four.columns.push-eight#comments
+.row
+  .four.columns.push-eight
+    #comments
       h6#comments_title 热门评论
       ul
         - if @article.comments.empty?
@@ -18,6 +18,12 @@ div.row#container
             p.vote
               span.support = "↑#{comment.support}"
               span.against = "↓#{comment.against}"
+    #connect
+      p
+        a.fc-webicon.rss href==feed_url
+        a.fc-webicon.twitter href="https://twitter.com/ivenvd"
+        a.fc-webicon.facebook href="https://facebook.com/ivenvd"
+        a.fc-webicon.googleplus href="https://plus.google.com/u/0/107191600758923533789"
 
-    div.eight.columns.pull-four#article
-      = @article.content.html_safe
+  #article.eight.columns.pull-four
+    = @article.content.html_safe

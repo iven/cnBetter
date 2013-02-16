@@ -28,28 +28,29 @@ head
   = csrf_meta_tag
 
 body
-  .container
-    header class="fixed contain-to-grid"
-      nav class="top-bar"
+  #container
+    header.fixed.contain-to-grid
+      nav.top-bar
         ul
-          li class="name"
+          li.name
             h1 = link_to "CnBetter", root_path
-          li class="toggle-topbar"
+          li.toggle-topbar
             a href="#"
         section
-          ul class="left"
-          ul class="right"
+          ul.left
+          ul.right
             li
               = link_to "首页", root_path
             li
               = link_to "新闻主题", topics_path
-            li class="divider"
+            li.divider
             li
               a href="#" 关于
-            li class="search"
+            li.search
               form
                 input type="search"
-            li class="has-button"
-              a class="small button" href="#" 搜索
-    == yield
+            li.has-button
+              a.small.button href="#" 搜索
+    #wrapper.row
+      == yield
 

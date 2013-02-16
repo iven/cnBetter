@@ -7,7 +7,7 @@ h2 {
   padding: 5px 0px;
 }
 
-#container {
+#wrapper {
   box-shadow: 0px 1px 25px rgba(0, 0, 0, 0.2);
   padding: 0px 30px 30px;
   background-color: rgb(255, 255, 255);
@@ -21,7 +21,7 @@ h2 {
 
 #comments {
   border-left: 3px solid rgb(43, 166, 203);
-  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   padding: 10px;
 
 
@@ -50,5 +50,13 @@ h2 {
         color: red;
       }
     }
+  }
+}
+
+#connect {
+  margin: 15px;
+  text-align: center;
+  a {
+    margin: 0px 5px;
   }
 }

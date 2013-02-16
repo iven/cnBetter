@@ -7,7 +7,12 @@ header {
   border-bottom: 3px solid rgb(51, 174, 194);
 }
 
-.top-bar,.contain-to-grid {
+.contain-to-grid {
+  background-color: rgb(41, 41, 41);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1)
+}
+
+.top-bar {
   background-color: rgb(41, 41, 41);
 }
 
