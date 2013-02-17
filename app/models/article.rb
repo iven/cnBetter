@@ -8,7 +8,10 @@ class Article
   field :updated_on, type: DateTime
   field :_id, type: Integer, default: ->{ id_ }
 
-  default_scope desc(:published_on)
   embeds_many :comments
+  has_many :images
   belongs_to :topic
+
+  default_scope desc(:published_on)
+  paginates_per 10
 end

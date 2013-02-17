@@ -7,7 +7,7 @@ atom_feed do |feed|
   @articles.each do |article|
     feed.entry(article) do |entry|
       entry.title article.title
-      entry.updated article.updated_on
+      entry.updated article.updated_on.strftime("%Y-%m-%dT%H:%M:%SZ")
       entry.author do |author|
         author.name article.author
       end

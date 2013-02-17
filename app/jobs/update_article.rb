@@ -5,7 +5,10 @@ require 'nokogiri'
 
 module UpdateArticle
   @queue = :update_article
-  @root_url = Rails.application.routes.url_helpers.root_url
+
+  def self.image_proxy_uri uri
+    Rails.application.routes.url_helpers.image_proxy_url(uri: uri)
+  end
 
   def self.format_paragraph
     @doc.css('br').each do |node|
@@ -35,14 +38,18 @@ module UpdateArticle
   def self.format_image
     @doc.css('a').each do |link|
       uri = link['href'].sub(%r{^img}, 'http://cnbeta.com/img')
-      link['href'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, "#{@root_url}image/proxy?uri=\\1")
+      link['href'] = self.image_proxy_uri(uri)
     end
     @doc.css('img').each do |img|
       uri = img['src'].sub(%r{^img}, 'http://cnbeta.com/img')
-      unless Image.where(uri: uri).exists?
-        Resque.enqueue(UpdateImage, uri)
+      if uri.starts_with?('http://img.cnbeta.com')
+        image = Image.find_or_create_by(uri: uri)
+        @article.images << image
+        unless image.data
+          Resque.enqueue(UpdateImage, uri)
+        end
       end
-      img['src'] = uri.sub(%r{^(http://img\.cnbeta\.com/)}, "#{@root_url}image/proxy?uri=\\1")
+      img['src'] = self.image_proxy_uri(uri)
     end
     @doc.css('img').wrap '<div align="center"></div>'
   end
@@ -53,6 +60,9 @@ module UpdateArticle
     uri = "http://m.cnbeta.com/marticle.php?sid=#{id}"
 
     @doc = Nokogiri::XML(open(uri).read.force_encoding('utf-8'))
+    # don't create article if 404 error occurs
+    @article = Article.create!(id_: id)
+
     self.format_image
     self.format_video
     self.format_paragraph
@@ -76,8 +86,7 @@ module UpdateArticle
       card.child.remove
     end
 
-    article = Article.create!(
-      id_: id,
+    @article.update_attributes(
       title: title,
       author: author,
       content: card.to_html,
@@ -86,7 +95,7 @@ module UpdateArticle
     )
 
     topic = Topic.find_or_create_by(name: topic)
-    topic.articles << article
+    topic.articles << @article
     unless topic.image_url
       Resque.enqueue(UpdateTopic, id)
     end

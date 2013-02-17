@@ -1,25 +1,19 @@
-h1 Listing articles
+#connect
+  p
+    a.fc-webicon.rss href==feed_url
+    a.fc-webicon.twitter href="https://twitter.com/ivenvd"
+    a.fc-webicon.facebook href="https://facebook.com/ivenvd"
+    a.fc-webicon.googleplus href="https://plus.google.com/u/0/107191600758923533789"
 
-table
-  tr
-    th Id
-    th Title
-    th Content
-    th Published on
-    th
-    th
-    th
-
+#article-board
   - @articles.each do |article|
-    tr
-      td = article.id
-      td = article.title
-      td = article.content
-      td = article.published_on
-      td = link_to 'Show', article
-      td = link_to 'Edit', edit_article_path(article)
-      td = link_to 'Destroy', article, :confirm => 'Are you sure?', :method => :delete
+    .article-card
+      h2.article-list-title
+        = link_to article.title, article_path(article)
+      - if article.images.empty?
+        = truncate_html(article.content.html_safe, length: 150)
+      - else
+        = image_tag image_proxy_uri article.images.first.uri
+      h4.article-list-subtitle.subheader 发表于 #{article.published_on.to_time}
 
-br
-
-= link_to 'New Article', new_article_path
+= paginate @articles

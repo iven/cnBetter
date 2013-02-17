@@ -23,8 +23,10 @@ end
 
 gem 'jquery-rails'
 gem "mongoid", "~> 3.0.0"
+gem 'kaminari'
 gem 'slim-rails'
 gem 'nokogiri'
+gem 'truncate_html'
 gem 'resque', require: 'resque/server'
 gem 'resque-scheduler', require: 'resque_scheduler'
 

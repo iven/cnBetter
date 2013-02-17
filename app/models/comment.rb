@@ -7,6 +7,7 @@ class Comment
   field :against, type: Integer
   field :time, type: DateTime
   field :_id, type: Integer, default: ->{ id_ }
+
   embedded_in :article
 
   default_scope desc(:support)

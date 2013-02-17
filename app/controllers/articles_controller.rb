@@ -2,11 +2,11 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    @articles = Article.all
+    @articles = Article.page params[:page]
 
     respond_to do |format|
       format.html # index.html.erb
-      format.atom
+      format.atom { render atom: @articles = Article.limit(20)}
       format.json { render json: @articles }
     end
   end

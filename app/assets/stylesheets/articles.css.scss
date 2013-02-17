@@ -2,15 +2,47 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-h2 {
+.article-list-title {
+  font-size: 16px;
+}
+
+.article-list-subtitle {
+  font-size: 12px;
+  text-align: right;
+}
+
+#article-title {
   font-size: 28px;
   padding: 5px 0px;
 }
 
-#wrapper {
-  box-shadow: 0px 1px 25px rgba(0, 0, 0, 0.2);
-  padding: 0px 30px 30px;
-  background-color: rgb(255, 255, 255);
+#article-board {
+  visibility: hidden;
+  overflow: hidden;
+}
+
+.article-card {
+  border-top: 3px solid rgb(43, 166, 203);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  padding: 0px 10px;
+  margin: 0 1% 15px;
+  width: 31%;
+}
+
+@media only screen and (max-width: 768px) {
+  .article-card {
+    margin-bottom: 15px;
+    width: 47%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .article-card {
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 100%;
+  }
 }
 
 #content {
