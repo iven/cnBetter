@@ -6,4 +6,5 @@ class Image
   field :_id, type: String, default: ->{ uri }
 
   belongs_to :article
+  belongs_to :topic
 end

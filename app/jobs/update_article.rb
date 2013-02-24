@@ -96,7 +96,7 @@ module UpdateArticle
 
     topic = Topic.find_or_create_by(name: topic)
     topic.articles << @article
-    unless topic.image_url
+    unless topic.image_uri
       Resque.enqueue(UpdateTopic, id)
     end
   end

@@ -6,6 +6,7 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.js
       format.atom { render atom: @articles = Article.limit(20)}
       format.json { render json: @articles }
     end

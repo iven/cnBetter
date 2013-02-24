@@ -12,15 +12,12 @@ module UpdateTopic
 
     md = open(uri).read.force_encoding('gb18030').encode!('utf-8').match(@re_article)
     if md
+      image_uri = md['image_uri']
       Topic.find_by(name: md['name']) do |topic|
-        image_uri = md['image_uri']
-        unless topic.image_uri
-          topic.update_attributes!(image_uri: image_uri)
-
-          image = Image.find_or_create_by(uri: uri)
-          unless image.data
-            Resque.enqueue(UpdateImage, image_uri)
-          end
+        image = Image.find_or_create_by(uri: image_uri)
+        topic.image = image
+        unless image.data
+          Resque.enqueue(UpdateImage, image_uri)
         end
       end
     end
