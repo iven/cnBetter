@@ -30,10 +30,15 @@ def update_article(id)
     title = doc.css('div.title b')[0].text
     content = doc.css('div.content')[0]
 
-    Article.create(
-      id: id,
-      title: title,
-      content: content,
+    Article.first_or_create(
+      {
+        id: id,
+      },
+      {
+        id: id,
+        title: title,
+        content: content,
+      }
     )
 end
 

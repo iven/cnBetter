@@ -1,8 +1,8 @@
 CnBetter::App.controllers  do
-  # get :index, :map => '/foo/bar' do
-  #   session[:foo] = 'bar'
-  #   render 'index'
-  # end
+  get :feed, :map => '/feed', provides: [:atom] do
+    @articles = Article.all(order: [:created_at.desc])
+    render 'feed'
+  end
 
   # get :sample, :map => '/sample/url', :provides => [:any, :js] do
   #   case content_type

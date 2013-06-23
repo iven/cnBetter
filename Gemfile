@@ -13,6 +13,7 @@ gem 'oj'
 # Project requirements
 gem 'rake'
 gem 'nokogiri'
+gem 'builder'
 
 # Component requirements
 gem 'slim'
