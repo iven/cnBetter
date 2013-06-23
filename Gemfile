@@ -4,14 +4,15 @@ source 'http://ruby.taobao.org'
 # gemspec
 
 # Server requirements
-# gem 'thin' # or mongrel
+gem 'thin' # or mongrel
 # gem 'trinidad', :platform => 'jruby'
 
 # Optional JSON codec (faster performance)
-# gem 'oj'
+gem 'oj'
 
 # Project requirements
 gem 'rake'
+gem 'nokogiri'
 
 # Component requirements
 gem 'slim'
