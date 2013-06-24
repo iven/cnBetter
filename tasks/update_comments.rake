@@ -2,8 +2,8 @@ require 'open-uri'
 require 'oj'
 require 'active_support/time'
 
-task update_comments: :environment do
-  recent_articles = Article.all(:created_at.gt => 8.hour.ago)
+task update_comments: :environment do |t, args|
+  recent_articles = Article.all(:created_at.gt => Integer(ENV['time']).hour.ago)
 
   recent_articles.each do |article|
     uri = "http://www.cnbeta.com/comment.htm?op=info&page=1&sid=#{article.id}"
