@@ -16,9 +16,9 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
       content = ''
       article.comments.all(order: [:support.desc]).each do |comment|
         content << "<tt><font color='red'>↑" \
-          << "#{comment.support}".ljust(4).gsub(' ', '&nbsp') \
+          << "#{comment.support}".ljust(4).gsub(' ', '&nbsp;') \
           << "</font><font color='green'>↓" \
-          << "#{comment.against}".ljust(4).gsub(' ', '&nbsp') \
+          << "#{comment.against}".ljust(4).gsub(' ', '&nbsp;') \
           << "</font></tt>#{comment.content}<br />"
       end
       content << article.content
