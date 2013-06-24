@@ -1,5 +1,5 @@
-job_type :padrino_rake, 'cd :path && padrino rake :task -e :environment'
 set :output, "/tmp/cnbetter.log"
+job_type :padrino_rake, 'cd :path && padrino rake :task -e :environment --silent :output'
 
 every 10.minutes do
   padrino_rake 'update_articles'
