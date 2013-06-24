@@ -3,7 +3,7 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
   xml.title   "cnBetter"
   xml.link    "rel" => "self", "href" => url_for(:feed)
   xml.id      url_for(:feed)
-  xml.updated @articles[0].updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" if @articles
+  xml.updated @articles.first.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" if @articles
   xml.author  { xml.name "Iven Hsu" }
 
   @articles.each do |article|
@@ -14,15 +14,12 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
       xml.updated article.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ"
       xml.author  { xml.name 'ivenvd@gmail.com' }
       content = ''
-      article.comments.each do |comment|
-        content << "
-        <dl>
-          <dt><small><strong>
-            ↑#{comment.support}
-            ↓#{comment.against}
-          </strong></small></dt>
-          <dd>#{comment.content}</dd>
-        </dl>"
+      article.comments.all(order: [:support.desc]).each do |comment|
+        content << "<tt><font color='red'>↑" \
+          << "#{comment.support}".ljust(4).gsub(' ', '&nbsp') \
+          << "</font><font color='green'>↓" \
+          << "#{comment.against}".ljust(4).gsub(' ', '&nbsp') \
+          << "</font></tt>#{comment.content}<br />"
       end
       content << article.content
       xml.content content, type: :html

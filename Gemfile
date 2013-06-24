@@ -14,6 +14,7 @@ gem 'oj'
 gem 'rake'
 gem 'nokogiri'
 gem 'builder'
+gem 'activesupport'
 
 # Component requirements
 gem 'slim'
