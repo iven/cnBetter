@@ -22,7 +22,7 @@ task update_comments: :environment do |t, args|
         article: article,
       }
       comment.save!
-      puts comment.content
+      article.updated_at = Time.now
     end
   end
 end

@@ -11,6 +11,7 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
       xml.title   article.title
       xml.link    "rel" => "alternate", "href" => "http://www.cnbeta.com/articles/#{article.id}.htm"
       xml.id       "http://www.cnbeta.com/articles/#{article.id}.htm"
+      xml.published article.created_at.strftime "%Y-%m-%dT%H:%M:%SZ"
       xml.updated article.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ"
       xml.author  { xml.name 'ivenvd@gmail.com' }
       content = ''

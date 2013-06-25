@@ -1,6 +1,6 @@
 CnBetter::App.controllers  do
   get :feed, :map => '/feed', provides: [:atom] do
-    @articles = Article.all(order: [:created_at.desc])
+    @articles = Article.all(order: [:created_at.desc], limit: 20)
     render 'feed'
   end
 

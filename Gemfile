@@ -12,6 +12,7 @@ gem 'oj'
 
 # Project requirements
 gem 'rake'
+gem 'tzinfo'
 gem 'nokogiri'
 gem 'builder'
 gem 'activesupport'
