@@ -38,6 +38,7 @@ def update_article(id)
         id: id,
         title: title,
         content: content,
+        hot_at: Time.at(0),
       }
     )
 end
