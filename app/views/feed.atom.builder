@@ -3,7 +3,7 @@ xml.feed "xmlns" => "http://www.w3.org/2005/Atom" do
   xml.title   "cnBetter"
   xml.link    "rel" => "self", "href" => url_for(:feed)
   xml.id      url_for(:feed)
-  xml.updated @articles.first.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" if @articles
+  xml.updated @articles.first.updated_at.strftime "%Y-%m-%dT%H:%M:%SZ" unless @articles.empty?
   xml.author  { xml.name "Iven Hsu" }
 
   @articles.each do |article|

@@ -34,7 +34,7 @@ gem 'minitest', '~>2.6.0', :require => 'minitest/autorun', :group => 'test'
 gem 'rack-test', :require => 'rack/test', :group => 'test'
 
 # Padrino Stable Gem
-gem 'padrino', '0.11.0'
+gem 'padrino', '0.11.2'
 gem 'tilt', '1.3.7'
 
 # Or Padrino Edge
