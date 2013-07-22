@@ -9,7 +9,8 @@ task update_comments: :environment do |t, args|
     comments_length_orig = article.comments.length
 
     uri = "http://www.cnbeta.com/comment.htm?op=info&page=1&sid=#{article.id}"
-    doc = Oj.load(open(uri).read.force_encoding('utf-8'))
+    referer_uri = "http://www.cnbeta.com/articles/#{article.id}.htm"
+    doc = Oj.load(open(uri, "Referer" => referer_uri).read.force_encoding('utf-8'))
     comments = doc['result']['hotlist']
     comments.each do |hot_comment|
       dict = doc['result']['cmntstore'][hot_comment['tid']]
