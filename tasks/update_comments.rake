@@ -8,29 +8,29 @@ task update_comments: :environment do |t, args|
   recent_articles.each do |article|
     comments_length_orig = article.comments.length
 
-    uri = "http://www.cnbeta.com/comment.htm?op=info&page=1&sid=#{article.id}"
-    referer_uri = "http://www.cnbeta.com/articles/#{article.id}.htm"
-    doc = Oj.load(open(uri, "Referer" => referer_uri).read.force_encoding('utf-8'))
-    comments = doc['result']['hotlist']
-    comments.each do |hot_comment|
-      dict = doc['result']['cmntstore'][hot_comment['tid']]
-      id = dict['tid']
-      comment = Comment.first_or_create(id: id)
-      comment.attributes = {
-        author: dict['name'],
-        region: dict['host_name'],
-        content: dict['comment'],
-        support: dict['score'],
-        against: dict['reason'],
-        posted_at: dict['date'],
-        article: article,
-      }
-      comment.save!
-      if comments_length_orig < 3 and comments.length >= 3
-        article.hot_at = Time.now
+    uri = "http://m.cnbeta.com/hotcomments.htm?id=#{article.id}"
+    doc = Nokogiri::HTML(open(uri).read.force_encoding('utf-8'))
+    comments = doc.css('div.content div')
+
+    if comments.length >= 3
+      article.comments.all.destroy
+
+      comments.each_slice(3) do |hot_comment|
+        Comment.create(
+          author: '',
+          region: '',
+          content: hot_comment[2].children[0].text.strip,
+          support: 0,
+          against: 0,
+          posted_at: Time.now,
+          article: article,
+        )
+        if comments_length_orig < 3 and comments.length >= 3 * 3
+          article.hot_at = Time.now
+        end
+        article.updated_at = Time.now
+        article.save!
       end
-      article.updated_at = Time.now
-      article.save!
     end
   end
 end
