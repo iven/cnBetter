@@ -8,7 +8,7 @@ task update_comments: :environment do |t, args|
   recent_articles.each do |article|
     comments_length_orig = article.comments.length
 
-    uri = "http://m.cnbeta.com/hotcomments.htm?id=#{article.id}"
+    uri = "http://m.cnbeta.com/wap/hotcomments.htm?id=#{article.id}"
     doc = Nokogiri::HTML(open(uri).read.force_encoding('utf-8'))
     comments = doc.css('div.content div')
 

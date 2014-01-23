@@ -19,7 +19,7 @@ def self.format_image(doc)
 end
 
 def update_article(id)
-    uri = "http://m.cnbeta.com/view.htm?id=#{id}"
+    uri = "http://m.cnbeta.com/wap/view_#{id}.htm"
 
     doc = Nokogiri::HTML(open(uri).read.force_encoding('utf-8'))
 
@@ -44,12 +44,10 @@ def update_article(id)
 end
 
 task update_articles: :environment do
-  doc = Nokogiri::HTML(open('http://m.cnbeta.com/'))
+  doc = Nokogiri::HTML(open('http://m.cnbeta.com/wap'))
 
   doc.css('div.list a').each do |a|
-    id = a['href'].split('=')[1]
-    unless Article.get(id)
-      update_article(id)
-    end
+    id = a['href'].match(/\d+/)[0]
+    update_article(id) unless Article.get(id)
   end
 end
